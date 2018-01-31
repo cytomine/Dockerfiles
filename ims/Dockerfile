@@ -26,6 +26,7 @@ RUN apt-get -y update && apt-get install -y software-properties-common && \
       gobject-introspection \
       gtk-doc-tools \
       imagemagick \
+      libgirepository1.0-dev \
       libglib2.0-dev \
       libgsf-1-dev \
       libjpeg8-dev \
@@ -57,7 +58,7 @@ EXPOSE 8082
 
 RUN ldconfig -v
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/IMS.war -O ROOT.war
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/IMS.war -O ROOT.war
 RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails

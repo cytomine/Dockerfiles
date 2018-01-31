@@ -40,7 +40,7 @@ RUN git clone https://github.com/vkholodkov/nginx-upload-module.git
 RUN cd nginx-upload-module/ && git checkout 2.2 && git reset --hard && git clean -f && git pull && git status
 
 WORKDIR /opt/nginx/nginx-1.10.1
-RUN ./configure --add-module=/opt/nginx/nginx-upload-module && make && sudo make install
+RUN ./configure --add-module=/opt/nginx/nginx-upload-module && make && make install
 
 
 RUN mkdir -p /opt/cytomine/bin

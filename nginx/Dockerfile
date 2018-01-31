@@ -36,8 +36,6 @@ RUN cd nginx-upload-module/ && git checkout 2.2 && git reset --hard && git clean
 WORKDIR /opt/nginx/nginx-1.10.1
 RUN ./configure --add-module=/opt/nginx/nginx-upload-module --with-http_ssl_module && make && make install
 
-ADD nginx.conf.sample /tmp/nginx.conf.sample
-
 # Expose ports.
 EXPOSE 80
 EXPOSE 443

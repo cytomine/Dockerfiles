@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/iipbase:v1.1
+FROM cytomine/iipbase:v1.1.1
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
