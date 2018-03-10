@@ -53,9 +53,7 @@ mv /tmp/injectSoftware.groovy .
 PATH="$PATH:$GROOVY_HOME/bin:/root/anaconda/bin"
 
 
-echo "CORE_URL"
-echo "$CORE_URL"
-groovy -cp 'lib/jars/Cytomine-client-java.jar' injectSoftware.groovy http://$CORE_URL $RABBITMQ_PUB_KEY $RABBITMQ_PRIV_KEY
+groovy -cp 'lib/jars/Cytomine-client-java.jar' injectSoftware.groovy $CORE_URL $RABBITMQ_PUB_KEY $RABBITMQ_PRIV_KEY
 
 
 touch /tmp/test.out
