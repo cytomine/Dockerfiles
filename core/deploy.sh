@@ -16,7 +16,12 @@
 # limitations under the License.
 #
 
-cd /var/lib/tomcat7/  && sed -i "/basePath/c\   \"basePath\": \"http://$CORE_URL\"," restapidoc.json
+CORE_URL=$(cat /usr/share/tomcat7/.grails/cytomineconfig.groovy | grep grails.serverURL)
+CORE_URL=(${CORE_URL//=/ })
+CORE_URL=${CORE_URL[1]}
+CORE_URL=$(echo $CORE_URL | sed "s/'/\"/g")
+
+cd /var/lib/tomcat7/  && sed -i "/basePath/c\   \"basePath\": $CORE_URL," restapidoc.json
 
 bash /tmp/addHosts.sh
 
