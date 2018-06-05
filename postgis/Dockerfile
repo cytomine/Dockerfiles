@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/postgres:v1.1
+FROM cytomine/postgres:v1.1.1
 MAINTAINER "Cytomine Team support@cytomine.be"
 
 RUN apt-get update && apt-get -y -q install postgresql-9.3-postgis-2.1

@@ -43,6 +43,7 @@ USER postgres
 RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
     createdb --encoding='utf-8' --template=template0 -O docker docker &&\
+    psql -d docker -c "CREATE EXTENSION ltree;" &&\
     psql -d postgres -c "UPDATE pg_database SET datistemplate='true' WHERE datname='docker'" &&\
     /etc/init.d/postgresql stop
 
