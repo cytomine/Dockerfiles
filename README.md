@@ -26,5 +26,6 @@ You will find below a script to compile all the images.
     cd ../nginx && docker build -t="cytomine/nginx" .
     cd ../mongodb && docker build -t="cytomine/mongodb" .
     cd ../auto_backup && docker build -t="cytomine/backup" .
+    cd ../slurm && docker build -t="cytomine/slurm" .
     cd ..
     echo DONE
