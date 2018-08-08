@@ -1,6 +1,7 @@
 #!/bin/bash
+
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,52 +16,23 @@
 # limitations under the License.
 #
 
-
-bash /tmp/addHosts.sh
-
-
-cd /software_router/algo/
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/classification_model_builder .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/classification_prediction .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/classification_validation .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-datamining .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/detect_sample .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/export_landmark .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/landmark_model_builder .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/landmark_prediction .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/object_finder .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/segmentation_model_builder .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/segmentation_prediction .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/ldm_model_builder .
-cp -R /root/Cytomine/Cytomine-python-datamining/cytomine-applications/ldm_prediction .
-
-
-
-#mkdir -p /software_router/algo/simple_elastix
-#mv /tmp/get_and_move.py /software_router/algo/simple_elastix/get_and_move.py
-
-cp -R /root/Cytomine/Cytomine-tools/computeAnnotationStats .
-cp /root/Cytomine/Cytomine-tools/computeTermArea.groovy .
-mkdir ../lib
-cp -R /root/Cytomine/Cytomine-tools/jars ../lib
-cp /root/Cytomine/Cytomine-tools/union4.groovy ../lib
-
 cd /software_router/
-mv cytomine-java-client.jar lib/jars/Cytomine-client-java.jar
-mv /tmp/injectSoftware.groovy .
+mv /tmp/config.groovy .
 
-# horrible hack for groovy with dash
-PATH="$PATH:$GROOVY_HOME/bin:/root/anaconda/bin"
+echo "cytomine.core.url='http://$CORE_URL'" >> config.groovy
+echo "cytomine.core.publicKey='$RABBITMQ_PUB_KEY'" >> config.groovy
+echo "cytomine.core.privateKey='$RABBITMQ_PRIV_KEY'" >> config.groovy
+echo "rabbitmq.username='$RABBITMQ_LOGIN'" >> config.groovy
+echo "rabbitmq.password='$RABBITMQ_PASSWORD'" >> config.groovy
+echo "groovyPath='$GROOVY_PATH'" >> config.groovy
 
+echo "cytomine.software.path.softwareSources='$SOFTWARE_CODE_PATH'" >> config.groovy
+echo "cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'" >> config.groovy
+echo "cytomine.software.jobs='$JOBS_PATH'" >> config.groovy
+echo "cytomine.software.sshKeysFile='/root/.ssh/id_rsa'" >> config.groovy
 
-groovy -cp 'lib/jars/Cytomine-client-java.jar' injectSoftware.groovy $CORE_URL $RABBITMQ_PUB_KEY $RABBITMQ_PRIV_KEY
+touch /tmp/log.out
 
+java -jar Cytomine-software-router.jar > /tmp/log.out &
 
-touch /tmp/test.out
-
-java -jar Cytomine-software-router.jar > /tmp/test.out &
-
-bash wrapdocker #&& service docker start
-
-
-tail -f /tmp/test.out
+tail -f /tmp/log.out

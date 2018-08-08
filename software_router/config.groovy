@@ -1,11 +1,14 @@
-exchangeCommunication = "exchangeCommunication"
-queueCommunication = "queueCommunication"
+rabbitmq.host = "rabbitmq"
+rabbitmq.port = "5672"
 
-rabbitAddress="rabbitmq"
-rabbitPort="5672"
+cytomine.software.communication.exchange = "exchangeCommunication"
+cytomine.software.communication.queue = "queueCommunication"
 
-jobDirectory = "./"
-logsDirectory = "algo/logs/"
-dataDirectory = "algo/data/"
+cytomine.software.descriptorFile = "descriptor.json"
 
-environment = "dev"
+cytomine.software.ssh.maxRetries = 3
+
+// In seconds
+cytomine.software.repositoryManagerRefreshRate = 300
+
+
