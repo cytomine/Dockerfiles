@@ -129,7 +129,9 @@ RUN wget https://github.com/singularityware/singularity/releases/download/$SINGU
 RUN adduser cytomine && \
     echo "cytomine:cytomine" | chpasswd
 
-RUN mkdir -p /home/cytomine/.ssh/authorized_keys
+RUN mkdir -p /home/cytomine/.ssh
+RUN mkdir -p /data/softwares/images
+RUN chmod -R 777 /data/softwares/images
 
 COPY slurm.conf /etc/slurm/slurm.conf
 COPY slurmdbd.conf /etc/slurm/slurmdbd.conf

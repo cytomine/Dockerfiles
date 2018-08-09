@@ -52,11 +52,9 @@ chown slurm:slurm /var/spool/slurmd /var/run/slurmd /var/lib/slurmd /var/log/slu
 echo "- Starting all Slurm processes under supervisord"
 /usr/bin/supervisord --configuration /etc/supervisord.conf
 
-echo "touche"
 touch /tmp/log.out
-echo "touche2"
 
-echo "touche3"
+bash /tmp/addHosts.sh
 
 tail -F /tmp/log.out
 

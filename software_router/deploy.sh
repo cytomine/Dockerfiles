@@ -17,22 +17,11 @@
 #
 
 cd /software_router/
-mv /tmp/config.groovy .
-
-echo "cytomine.core.url='http://$CORE_URL'" >> config.groovy
-echo "cytomine.core.publicKey='$RABBITMQ_PUB_KEY'" >> config.groovy
-echo "cytomine.core.privateKey='$RABBITMQ_PRIV_KEY'" >> config.groovy
-echo "rabbitmq.username='$RABBITMQ_LOGIN'" >> config.groovy
-echo "rabbitmq.password='$RABBITMQ_PASSWORD'" >> config.groovy
-echo "groovyPath='$GROOVY_PATH'" >> config.groovy
-
-echo "cytomine.software.path.softwareSources='$SOFTWARE_CODE_PATH'" >> config.groovy
-echo "cytomine.software.path.softwareImages='$SOFTWARE_DOCKER_IMAGES_PATH'" >> config.groovy
-echo "cytomine.software.jobs='$JOBS_PATH'" >> config.groovy
-echo "cytomine.software.sshKeysFile='/root/.ssh/id_rsa'" >> config.groovy
 
 touch /tmp/log.out
 
 java -jar Cytomine-software-router.jar > /tmp/log.out &
+
+bash /tmp/addHosts.sh
 
 tail -f /tmp/log.out

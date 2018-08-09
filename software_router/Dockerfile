@@ -46,7 +46,9 @@ RUN mkdir -p /software_router && \
     cd /software_router && \
     wget http://release.cytomine.be/software-router/Cytomine-software-router.jar -O Cytomine-software-router.jar
 ADD log4j.properties /software_router/
-ADD config.groovy /tmp/config.groovy
+
+
+RUN mkdir -p /root/.ssh
 
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
