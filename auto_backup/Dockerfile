@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.1
-MAINTAINER "Cytomine Team support@cytomine.be"
+FROM cytomine/base:v1.2.0
+
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 RUN apt-get update -y && apt-get -y install \
       postgresql-client \

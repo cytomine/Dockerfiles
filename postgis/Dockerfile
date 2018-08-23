@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
 # limitations under the License.
 #
 
-FROM cytomine/postgres:v1.1.1
-MAINTAINER "Cytomine Team support@cytomine.be"
+FROM cytomine/postgres:v2.0.0
 
-RUN apt-get update && apt-get -y -q install postgresql-9.3-postgis-2.1
-ADD postgis--2.1.5.sql /usr/share/postgresql/9.3/extension/postgis--2.1.5.sql
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
+
+RUN apt-get update -y && apt-get -y install postgis postgresql-10-postgis-2.4
 
 USER postgres
 # Add the postgis extension to the `docker` database
 RUN    /etc/init.d/postgresql start &&\
-	psql -d docker -f /usr/share/postgresql/9.3/extension/postgis--2.1.5.sql  &&\
+	psql -d docker -c "CREATE EXTENSION postgis;"  &&\
 	psql -d docker -c "GRANT ALL ON geometry_columns TO PUBLIC;"  &&\
 	psql -d docker -c "GRANT ALL ON geography_columns TO PUBLIC;"  &&\
 	psql -d docker -c "GRANT ALL ON spatial_ref_sys TO PUBLIC;"

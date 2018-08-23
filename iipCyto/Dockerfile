@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-FROM cytomine/iipbase:v1.1.1
+FROM cytomine/iipbase:v1.2.0
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 # use previous lib of lipopenjpeg-dev due to the bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=734238
 RUN cd /tmp && wget http://launchpadlibrarian.net/147357170/libopenjpeg2_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg2_1.3+dfsg-4.6ubuntu2_amd64.deb

@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.1
+FROM cytomine/base:v1.2.0
 
-MAINTAINER Cytomine Team<support@cytomine.be>
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 #install memcached
 RUN apt-get update -y && apt-get install -y \
