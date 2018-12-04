@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,19 @@
 
 # Ubuntu reference base OS
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 RUN apt-get update -y && apt-get -y install \
-      wget \
-      unzip \
       build-essential \
-      locate
+      locate \
+      logrotate \
+      net-tools \
+      unzip \
+      wget
 
+RUN sed -i "/su root syslog/c\su root root" /etc/logrotate.conf
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
-
-EXPOSE 22
 

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.1
+FROM cytomine/base:v1.2.0
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 RUN echo "deb http://www.rabbitmq.com/debian/ testing main"  | tee  /etc/apt/sources.list.d/rabbitmq.list > /dev/null
 RUN wget http://www.rabbitmq.com/rabbitmq-signing-key-public.asc

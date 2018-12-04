@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-FROM cytomine/iipbase:v1.1.1
+FROM cytomine/iipbase:v1.2.0
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 #IIP Image Server
-RUN cd /tmp && git clone https://github.com/ruven/iipsrv && cd /tmp/iipsrv && git checkout tags/iipsrv-1.0 && sh autogen.sh && ./configure && make 
+RUN cd /tmp && git clone https://github.com/ruven/iipsrv && cd /tmp/iipsrv && git checkout 65dfee8df3282be0ed5bcf364926be045363196e && sh autogen.sh && ./configure && make 
 RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
 RUN ldconfig -v

@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.1
-MAINTAINER "Cytomine Team support@cytomine.be"
+FROM cytomine/base:v1.2.0
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 # Install MongoDB.
 RUN \

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2017. Authors: see NOTICE file.
+# Copyright (c) 2009-2018. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.1
+FROM cytomine/base:v1.2.0
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 RUN apt-get -y update && \
     apt-get install -y \
@@ -37,7 +37,7 @@ RUN wget http://nginx.org/download/nginx-1.10.1.tar.gz
 RUN tar -zxvf nginx-1.10.1.tar.gz
 
 RUN git clone https://github.com/vkholodkov/nginx-upload-module.git
-RUN cd nginx-upload-module/ && git checkout 2.2 && git reset --hard && git clean -f && git pull && git status
+RUN cd nginx-upload-module/ && git checkout 2f67cde5a0aaf7cffd43a71f5c4b443698909f4a
 
 WORKDIR /opt/nginx/nginx-1.10.1
 RUN ./configure --add-module=/opt/nginx/nginx-upload-module && make && make install
