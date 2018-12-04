@@ -22,7 +22,7 @@ mkdir -p /data/thumb
 
 echo "lauch retrieval"
 
-cd CBIRest-0.2.1/
+cd CBIRest-0.5/
 
 cp -r /tmp/testsvectors testsvectors
 cp -r /tmp/config config
@@ -36,11 +36,11 @@ bash /tmp/addHosts.sh
 touch /tmp/retrieval.log
 if [ "$ENGINE" == "memory" ] 
 then
-	java -jar retrieval-0.2.1-SNAPSHOT.war --spring.profiles.active=prod --retrieval.store.name=MEMORY --retrieval.thumb.index=/data/thumb/index --retrieval.thumb.search=/data/thumb/search
+	java -jar retrieval-0.5-SNAPSHOT.war --spring.profiles.active=prod --retrieval.store.name=MEMORY --retrieval.thumb.index=/data/thumb/index --retrieval.thumb.search=/data/thumb/search
 else
 	cd /data/thumb && redis-server /tmp/redis.conf&
 
-	java -jar retrieval-0.2.1-SNAPSHOT.war --spring.profiles.active=prod --retrieval.store.name=REDIS --retrieval.thumb.index=/data/thumb/index --retrieval.thumb.search=/data/thumb/search > /tmp/retrieval.log
+	java -jar retrieval-0.5-SNAPSHOT.war --spring.profiles.active=prod --retrieval.store.name=REDIS --retrieval.thumb.index=/data/thumb/index --retrieval.thumb.search=/data/thumb/search > /tmp/retrieval.log
 fi
 
 tail -F /tmp/retrieval.log

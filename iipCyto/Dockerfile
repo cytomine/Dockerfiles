@@ -26,7 +26,7 @@ RUN cd /tmp && wget http://launchpadlibrarian.net/147357169/libopenjpeg-dev_1.3%
 RUN cd /tmp && git clone https://github.com/openslide/openslide && cd /tmp/openslide && git checkout tags/v3.4.1 && autoreconf -i && ./configure && make && make install
 
 #IIP Image Server
-RUN cd /tmp && git clone https://github.com/cytomine/iipsrv && cd /tmp/iipsrv && git checkout 6a42b2e28e07347be7e42048be72e078c8bc1ef7 && sh autogen.sh && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide" ./configure && make 
+RUN cd /tmp && git clone https://github.com/cytomine/iipsrv && cd /tmp/iipsrv && git checkout 816722e5a1acc485914350f96becbda40891961e && sh autogen.sh && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide" ./configure && make
 RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
 RUN ldconfig -v

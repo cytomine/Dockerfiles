@@ -23,10 +23,12 @@ MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 RUN apt-get update -y && apt-get -y install \
       build-essential \
       locate \
+      logrotate \
       net-tools \
       unzip \
       wget
 
+RUN sed -i "/su root syslog/c\su root root" /etc/logrotate.conf
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 

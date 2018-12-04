@@ -17,6 +17,25 @@
 
 mkdir -p /tmp/uploaded && chmod 777 /tmp/uploaded
 
+echo "/usr/local/nginx/logs/access.log {"   > /etc/logrotate.d/nginx
+echo "  copytruncate"                      >> /etc/logrotate.d/nginx
+echo "  daily"                             >> /etc/logrotate.d/nginx
+echo "  rotate 14"                         >> /etc/logrotate.d/nginx
+echo "  compress"                          >> /etc/logrotate.d/nginx
+echo "  missingok"                         >> /etc/logrotate.d/nginx
+echo "  create 640 root root"              >> /etc/logrotate.d/nginx
+echo "}"                                   >> /etc/logrotate.d/nginx
+echo ""                                    >> /etc/logrotate.d/nginx
+echo "/usr/local/nginx/logs/error.log {"   >> /etc/logrotate.d/nginx
+echo "  copytruncate"                      >> /etc/logrotate.d/nginx
+echo "  daily"                             >> /etc/logrotate.d/nginx
+echo "  rotate 14"                         >> /etc/logrotate.d/nginx
+echo "  compress"                          >> /etc/logrotate.d/nginx
+echo "  missingok"                         >> /etc/logrotate.d/nginx
+echo "  create 640 root root"              >> /etc/logrotate.d/nginx
+echo "}"                                   >> /etc/logrotate.d/nginx
+
+
 echo "Launch of nginx"
 /usr/local/nginx/sbin/nginx
 echo "End of the deployment"

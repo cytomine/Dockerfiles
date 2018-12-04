@@ -19,7 +19,7 @@ FROM cytomine/iipbase:v1.2.0
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 #IIP Image Server
-RUN cd /tmp && git clone https://github.com/ruven/iipsrv && cd /tmp/iipsrv && git checkout tags/iipsrv-1.0 && sh autogen.sh && ./configure && make 
+RUN cd /tmp && git clone https://github.com/ruven/iipsrv && cd /tmp/iipsrv && git checkout 65dfee8df3282be0ed5bcf364926be045363196e && sh autogen.sh && ./configure && make 
 RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
 RUN ldconfig -v

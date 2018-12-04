@@ -18,9 +18,9 @@ FROM cytomine/java8:v1.2.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN apt-get -y update && apt-get install -y procps redis-server
+RUN apt-get -y update && apt-get install -y procps redis-server unzip
 
-RUN mkdir -p /tmp/retrieval/ && cd /tmp/retrieval/ && wget --no-check-certificate https://github.com/loic911/CBIRestAPI/releases/download/v0.2.1/CBIRest-0.2.1.zip -O retrieval.zip
+RUN mkdir -p /tmp/retrieval/ && cd /tmp/retrieval/ && wget --no-check-certificate https://github.com/loic911/CBIRestAPI/releases/download/v0.5/CBIRest-0.5.zip -O retrieval.zip
 
 RUN touch /tmp/addHosts.sh
 ADD testsvectors /tmp/testsvectors

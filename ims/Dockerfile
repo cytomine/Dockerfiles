@@ -45,7 +45,7 @@ RUN cd /tmp && wget http://launchpadlibrarian.net/147357170/libopenjpeg2_1.3%2Bd
 RUN cd /tmp && wget http://launchpadlibrarian.net/147357169/libopenjpeg-dev_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg-dev_1.3+dfsg-4.6ubuntu2_amd64.deb
 
 # vips
-RUN cd /tmp && wget https://github.com/jcupitt/libvips/releases/download/v8.5.1/vips-8.5.1.tar.gz && tar -zxvf ./vips-8.5.1.tar.gz && cd ./vips-8.5.1 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
+RUN cd /tmp && wget https://github.com/libvips/libvips/releases/download/v8.5.1/vips-8.5.1.tar.gz && tar -zxvf ./vips-8.5.1.tar.gz && cd ./vips-8.5.1 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
 
 #openslide-java
 RUN update-java-alternatives -s java-8-oracle
@@ -57,8 +57,9 @@ EXPOSE 8082
 
 RUN ldconfig -v
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/IMS.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.1/restapidoc.json -O restapidoc.json
+RUN chmod -R 777 /var/lib/tomcat7
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.0/IMS.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.0/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails
 
