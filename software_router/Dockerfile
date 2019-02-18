@@ -60,7 +60,7 @@ RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/
 
 # Cytomine-python-client
 
-RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout tags/v1.1
+RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout v1.1.1
 RUN cd /root/Cytomine/Cytomine-python-client/client/ && python setup.py build && python setup.py install
 RUN cd /root/Cytomine/Cytomine-python-client/utilities/ &&  python setup.py build && python setup.py install
 
