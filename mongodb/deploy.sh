@@ -20,6 +20,7 @@ echo "log rotation"
 echo "/var/log/mongodb/mongo.log {"     >> /etc/logrotate.d/mongo
 echo "  copytruncate"                   >> /etc/logrotate.d/mongo
 echo "  weekly"                         >> /etc/logrotate.d/mongo
+echo "  size 250M"                      >> /etc/logrotate.d/mongo
 echo "  rotate 14"                      >> /etc/logrotate.d/mongo
 echo "  compress"                       >> /etc/logrotate.d/mongo
 echo "  missingok"                      >> /etc/logrotate.d/mongo

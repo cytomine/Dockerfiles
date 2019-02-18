@@ -27,7 +27,8 @@ service tomcat7 start
 
 echo "/var/log/tomcat7/catalina.out {"   > /etc/logrotate.d/tomcat7
 echo "  copytruncate"                   >> /etc/logrotate.d/tomcat7
-echo "  daily"                         >> /etc/logrotate.d/tomcat7
+echo "  daily"                          >> /etc/logrotate.d/tomcat7
+echo "  size 250M"                      >> /etc/logrotate.d/tomcat7
 echo "  rotate 14"                      >> /etc/logrotate.d/tomcat7
 echo "  compress"                       >> /etc/logrotate.d/tomcat7
 echo "  missingok"                      >> /etc/logrotate.d/tomcat7

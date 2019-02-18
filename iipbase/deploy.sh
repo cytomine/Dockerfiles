@@ -18,6 +18,7 @@
 echo "/tmp/iip-openslide.out {"          > /etc/logrotate.d/iip
 echo "  copytruncate"                   >> /etc/logrotate.d/iip
 echo "  daily"                          >> /etc/logrotate.d/iip
+echo "  size 250M"                      >> /etc/logrotate.d/iip
 echo "  rotate 14"                      >> /etc/logrotate.d/iip
 echo "  compress"                       >> /etc/logrotate.d/iip
 echo "  missingok"                      >> /etc/logrotate.d/iip
