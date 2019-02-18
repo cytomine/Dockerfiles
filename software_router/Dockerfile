@@ -14,37 +14,53 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.1.1
+FROM cytomine/java8:v1.2.0
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
-ARG SINGULARITY_VERSION=2.4.5
+ARG SINGULARITY_VERSION=v3.0.0
 
 RUN apt-get -y update && \
-    apt-get -y install \
-        apt-transport-https \
-        ca-certificates \
-        iptables \
-        make \
-        squashfs-tools \
-        openssh-client \
-        libarchive-dev \
-        python
+    apt-get install -y \
+	build-essential \
+	git \
+	libssl-dev uuid-dev \
+	libgpgme11-dev \
+	squashfs-tools \
+	libseccomp-dev \
+	pkg-config
+
+ARG VERSION=1.11.4
+ARG OS=linux
+ARG ARCH=amd64
+ARG GOPATH=${HOME}/go
+RUN cd /tmp && wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
 
 RUN dpkg-reconfigure locales
 
+ENV PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
+
+RUN go get -u github.com/golang/dep/cmd/dep
+
 # Singularity installation
-RUN wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
-    tar xvf singularity-$SINGULARITY_VERSION.tar.gz && \
-    cd singularity-$SINGULARITY_VERSION && \
-    ./configure --prefix=/usr/local && \
+RUN mkdir -p $GOPATH/src/github.com/sylabs && \
+    cd $GOPATH/src/github.com/sylabs && \
+    wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
+    tar xvf singularity-$SINGULARITY_VERSION.tar.gz
+    ./mconfig
+
+RUN cd $GOPATH/src/github.com/sylabs/singularity/builddir && \
     make && \
     make install
 
 # Software-router Installation
+#TODO put download the right software_router
+#RUN mkdir -p /software_router && \
+#    cd /software_router && \
+#    wget http://release.cytomine.be/software-router/Cytomine-software-router.jar -O Cytomine-software-router.jar
 RUN mkdir -p /software_router && \
-    cd /software_router && \
-    wget http://release.cytomine.be/software-router/Cytomine-software-router.jar -O Cytomine-software-router.jar
+    cd /software_router
+ADD Cytomine-software-router.jar /software_router/Cytomine-software-router.jar
 ADD log4j.properties /software_router/
 
 

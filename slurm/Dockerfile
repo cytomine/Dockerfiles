@@ -14,14 +14,12 @@
 # limitations under the License.
 #
 
-# sudo docker run -p 10022:22 -it -h cytomine-slurm slurm-container
-
 FROM centos:7.4.1708
 
 ARG SLURM_VERSION=17.11.7
 ARG SLURM_DOWNLOAD_MD5=6452300949ba375c3898ba7ce7959f05
 ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-"$SLURM_VERSION".tar.bz2
-ARG SINGULARITY_VERSION=2.4.5
+ARG SINGULARITY_VERSION=v3.0.0
 
 RUN yum makecache fast \
     && yum -y install epel-release \
@@ -37,6 +35,7 @@ RUN yum makecache fast \
         git \
         glibc-devel \
         gmp-devel \
+        libarchive-devel \
         libffi-devel \
         libGL-devel \
         libX11-devel \
@@ -48,6 +47,7 @@ RUN yum makecache fast \
         ncurses-devel \
         openssl-devel \
         openssl-libs \
+        patch \
         perl \
         pkconfig \
         psmisc \
@@ -119,10 +119,27 @@ RUN set -x \
 
 RUN yum -y install squashfs-tools
 
-RUN wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
+
+ARG VERSION=1.11.4
+ARG OS=linux
+ARG ARCH=amd64
+ARG GOPATH=${HOME}/go
+RUN cd /tmp && wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
+
+
+ENV PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
+
+RUN go get -u github.com/golang/dep/cmd/dep
+
+# Singularity installation
+RUN mkdir -p $GOPATH/src/github.com/sylabs && \
+    cd $GOPATH/src/github.com/sylabs && \
+    wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
     tar xvf singularity-$SINGULARITY_VERSION.tar.gz && \
-    cd singularity-$SINGULARITY_VERSION && \
-    ./configure --prefix=/usr/local && \
+    cd singularity && \
+    ./mconfig
+
+RUN cd $GOPATH/src/github.com/sylabs/singularity/builddir && \
     make && \
     make install
 
