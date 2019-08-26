@@ -17,7 +17,7 @@ You will find below a script to compile all the images.
     cd ../postgis && docker build -t cytomine/postgis:v2.0.0 .
     cd ../retrieval && docker build -t cytomine/retrieval:v1.1.2 .
     cd ../iipbase && docker build -t cytomine/iipbase:v1.2.0 .
-    cd ../iipCyto && docker build -t cytomine/iipcyto:v1.2.0 .
+    cd ../iipCyto && docker build -t cytomine/iipcyto:v1.2.1 .
     cd ../iipJpeg2000 && docker build -t cytomine/iipjpeg2000:v1.1.1 .
     cd ../iipOfficial && docker build -t cytomine/iipofficial:v1.2.0 .
     cd ../bioformat && docker build -t cytomine/bioformat:v1.1.2 .
