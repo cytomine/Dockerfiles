@@ -14,26 +14,30 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.1
+FROM cytomine/java8:v1.2.0
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 # Miniconda Python environment
-RUN wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
-RUN bash Miniconda2-latest-Linux-x86_64.sh -b
+RUN wget https://repo.continuum.io/miniconda/Miniconda2-4.7.12-Linux-x86_64.sh
+RUN bash Miniconda2-4.7.12-Linux-x86_64.sh -b
 
 ENV PATH /root/miniconda2/bin:$PATH 
 
 RUN conda install cython --yes
-RUN conda install joblib=0.11 --yes
-RUN conda install pillow=3.4.2 --yes
-RUN conda install numpy=1.11.2 --yes
-RUN conda install shapely --yes
-RUN conda install scipy=0.18.1 --yes
+RUN conda install joblib=0.12 --yes
+RUN conda install pillow=6.2.1 --yes
+RUN conda install numpy=1.16.5 --yes
+RUN conda install shapely=1.6.4 --yes
+RUN conda install scipy=1.2.1 --yes
 RUN conda install scikit-learn=0.19 --yes
-RUN conda install opencv=2.4.10 --yes
-RUN conda install libgfortran==1 --yes
-RUN conda install matplotlib=1.4 --yes
+RUN conda install opencv=3.4.2 --yes
+
+#RUN conda search | grep libgfortran
+#RUN conda search | grep matplotlib
+
+#RUN conda install libgfortran==1 --yes
+RUN conda install matplotlib=2.2.2 --yes
 
 RUN apt-get -y update && apt-get install -y \
       apt-transport-https \
@@ -54,15 +58,15 @@ RUN dpkg-reconfigure locales
 
 # Cytomine-python-datamining
 
-RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout tags/v1.1
+RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout 38a1e6efa8471f1b9a8fec8fc227fb2a11eaa15b
+#RUN mkdir -p /root/Cytomine/ && cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-datamining.git && cd Cytomine-python-datamining/ && git checkout tags/v1.2.0
 RUN cd /root/Cytomine/Cytomine-python-datamining/cytomine-datamining/algorithms/pyxit/ && cython _estimator.pyx && python setup.py build && python setup.py install
 
 
 # Cytomine-python-client
 
-RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout v1.1.1
-RUN cd /root/Cytomine/Cytomine-python-client/client/ && python setup.py build && python setup.py install
-RUN cd /root/Cytomine/Cytomine-python-client/utilities/ &&  python setup.py build && python setup.py install
+RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-python-client.git && cd Cytomine-python-client/ && git checkout v2.1.1
+RUN cd /root/Cytomine/Cytomine-python-client/ && python setup.py build && python setup.py install
 
 RUN cd /root/Cytomine/ && git clone https://github.com/cytomine/Cytomine-tools.git && cd Cytomine-tools/ && git checkout tags/v1.1
 
