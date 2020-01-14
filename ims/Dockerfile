@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/tomcat7:v1.2.0
+FROM cytomine/tomcat7:v1.2.1
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
