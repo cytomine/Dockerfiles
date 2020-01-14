@@ -18,12 +18,24 @@
 echo "/tmp/iip-openslide.out {"          > /etc/logrotate.d/iip
 echo "  copytruncate"                   >> /etc/logrotate.d/iip
 echo "  daily"                          >> /etc/logrotate.d/iip
+echo "  size 250M"                      >> /etc/logrotate.d/iip
 echo "  rotate 14"                      >> /etc/logrotate.d/iip
 echo "  compress"                       >> /etc/logrotate.d/iip
 echo "  missingok"                      >> /etc/logrotate.d/iip
 echo "  create 640 root root"           >> /etc/logrotate.d/iip
 echo "  su root root"                   >> /etc/logrotate.d/iip
 echo "}"                                >> /etc/logrotate.d/iip
+
+echo "/usr/local/nginx/logs/access.log {" >> /etc/logrotate.d/iip
+echo "  copytruncate"                     >> /etc/logrotate.d/iip
+echo "  daily"                            >> /etc/logrotate.d/iip
+echo "  size 100M"                        >> /etc/logrotate.d/iip
+echo "  rotate 30"                        >> /etc/logrotate.d/iip
+echo "  compress"                         >> /etc/logrotate.d/iip
+echo "  missingok"                        >> /etc/logrotate.d/iip
+echo "  create 640 root root"             >> /etc/logrotate.d/iip
+echo "  su root root"                     >> /etc/logrotate.d/iip
+echo "}"                                  >> /etc/logrotate.d/iip
 
 mkdir /tmp/uploaded
 chmod -R 777 /tmp/uploaded

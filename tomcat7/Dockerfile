@@ -26,5 +26,11 @@ ADD tomcat7.settings /tmp/tomcat7.settings
 
 RUN cat /tmp/tomcat7.settings > /etc/default/tomcat7
 
+RUN cd /tmp/ && wget https://github.com/logrotate/logrotate/releases/download/3.11.0/logrotate-3.11.0.tar.xz && tar -xJf logrotate-3.11.0.tar.xz
+RUN apt-get -y update && apt-get install -y autoconf automake libpopt-dev libtool make xz-utils
+RUN cd /tmp/logrotate-3.11.0 && autoreconf -fiv && ./configure && make
+
+RUN cp /tmp/logrotate-3.11.0/logrotate /usr/sbin/logrotate
+
 EXPOSE 8080
 
