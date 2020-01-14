@@ -27,6 +27,7 @@ bash /tmp/addHosts.sh
 
 mv /tmp/setenv.sh /usr/share/tomcat7/bin/
 
+cron
 service tomcat7 start
 
 echo "/var/log/tomcat7/catalina.out {"   > /etc/logrotate.d/tomcat7
