@@ -18,7 +18,7 @@ FROM cytomine/java8:v1.2.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-ARG SINGULARITY_VERSION=v3.0.0
+ARG SINGULARITY_VERSION=3.1.0
 
 RUN apt-get -y update && \
     apt-get install -y \
@@ -45,8 +45,9 @@ RUN go get -u github.com/golang/dep/cmd/dep
 # Singularity installation
 RUN mkdir -p $GOPATH/src/github.com/sylabs && \
     cd $GOPATH/src/github.com/sylabs && \
-    wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
-    tar xvf singularity-$SINGULARITY_VERSION.tar.gz
+    wget https://github.com/sylabs/singularity/releases/download/v$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
+    tar xvf singularity-$SINGULARITY_VERSION.tar.gz && \
+    cd singularity && \
     ./mconfig
 
 RUN cd $GOPATH/src/github.com/sylabs/singularity/builddir && \

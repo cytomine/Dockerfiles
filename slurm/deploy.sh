@@ -1,6 +1,8 @@
 #!/bin/bash
 
 if [ ! -f "/var/lib/mysql/ibdata1" ]; then
+    #hack /usr/libexec/resolveip doesn't exist
+    cp /usr/bin/resolveip  /usr/libexec/resolveip
     echo "- Initializing database"
     /usr/bin/mysql_install_db &> /dev/null
     echo "- Database initialized"
