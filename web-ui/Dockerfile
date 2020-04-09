@@ -1,6 +1,6 @@
-FROM node:10.19.0 as build-stage
+FROM node:13.12.0 as build-stage
 WORKDIR /app
-RUN git clone https://github.com/cytomine/Cytomine-Web-UI.git && cd Cytomine-Web-UI && git checkout v1.1.0
+RUN git clone https://github.com/cytomine/Cytomine-Web-UI.git && cd Cytomine-Web-UI && git checkout v1.1.1
 WORKDIR /app/Cytomine-Web-UI
 RUN npm install
 RUN npm run build
