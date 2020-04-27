@@ -23,7 +23,11 @@ RUN apt-get -y update && apt-get install -y \
         libpcre3 \
         libpcre3-dev \
         libssl-dev \
+        software-properties-common \
         zlib1g-dev
+RUN add-apt-repository -y ppa:certbot/certbot && \
+        apt-get -y update && \
+        apt-get install -y certbot
 
 RUN mkdir -p /opt/nginx
 WORKDIR /opt/nginx
@@ -40,6 +44,9 @@ RUN ./configure --add-module=/opt/nginx/nginx-upload-module --with-http_ssl_modu
 EXPOSE 80
 EXPOSE 443
 
+RUN mkdir -p /usr/local/nginx/html/.well-known/acme-challenge && cp /usr/local/nginx/html/index.html /usr/local/nginx/html/.well-known/acme-challenge/.
+
+ADD nginx.service /etc/init.d/nginx
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
 

@@ -38,6 +38,7 @@ echo "  create 640 root root"              >> /etc/logrotate.d/nginx
 echo "}"                                   >> /etc/logrotate.d/nginx
 
 
+cron
 echo "Launch of nginx"
 /usr/local/nginx/sbin/nginx
 echo "End of the deployment"
