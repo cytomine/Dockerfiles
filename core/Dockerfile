@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2018. Authors: see NOTICE file.
+# Copyright (c) 2009-2020. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ FROM cytomine/tomcat7:v1.2.1
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v2.1.1/Core.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v2.1.1/restapidoc.json -O restapidoc.json
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v2.1.2/Core.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v2.1.2/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails
 
