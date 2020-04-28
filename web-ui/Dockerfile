@@ -1,4 +1,3 @@
-#!/bin/bash
 #
 # Copyright (c) 2009-2020. Authors: see NOTICE file.
 #
@@ -14,17 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-if [ ! -f /.rabbitmq_password_set ]; then
-	echo "set password"
-	/set_rabbitmq_password.sh
-fi
-#exec /usr/sbin/rabbitmq-server
-service rabbitmq-server start
-rabbitmq-plugins enable rabbitmq_management
-rabbitmqctl add_user router router
-rabbitmqctl set_user_tags router administrator
-rabbitmqctl set_permissions -p / router ".*" ".*" ".*"
 
-touch /tmp/test.out
+FROM node:13.12.0 as build-stage
+WORKDIR /app
+RUN git clone https://github.com/cytomine/Cytomine-Web-UI.git && cd Cytomine-Web-UI && git checkout v1.1.2
+WORKDIR /app/Cytomine-Web-UI
+RUN npm install
+RUN npm run build
 
-tail -f /tmp/test.out
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/Cytomine-Web-UI/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf
