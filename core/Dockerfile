@@ -18,8 +18,8 @@ FROM cytomine/tomcat7:v1.2.1
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v2.1.2/Core.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v2.1.2/restapidoc.json -O restapidoc.json
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.0.0/Core.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.0.0/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails
 

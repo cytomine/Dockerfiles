@@ -70,13 +70,10 @@ apt-get update && \
 apt-get -y install docker-ce
 
 # Software-router Installation
-#TODO put download the right software_router
-#RUN mkdir -p /software_router && \
-#    cd /software_router && \
-#    wget http://release.cytomine.be/software-router/Cytomine-software-router.jar -O Cytomine-software-router.jar
 RUN mkdir -p /software_router && \
-    cd /software_router
-ADD Cytomine-software-router.jar /software_router/Cytomine-software-router.jar
+    cd /software_router && \
+    wget https://github.com/cytomine/Cytomine-software-router/releases/download/v2.0.0/Cytomine-software-router.jar -O Cytomine-software-router.jar
+
 ADD log4j.properties /software_router/
 
 
