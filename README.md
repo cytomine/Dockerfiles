@@ -23,7 +23,7 @@ You will find below a script to compile all the images.
     cd ../iipJpeg2000 && docker build -t cytomine/iipjpeg2000:v1.1.1 .
     cd ../iipOfficial && docker build -t cytomine/iipofficial:v1.2.0 .
     cd ../bioformat && docker build -t cytomine/bioformat:v1.1.2 .
-    cd ../ims && docker build -t cytomine/ims:v1.2.2 .
+    cd ../ims && docker build -t cytomine/ims:v1.2.3 .
     cd ../nginx && docker build -t cytomine/nginx:v1.3.0 .
     cd ../mongodb && docker build -t cytomine/mongodb:v1.1.2 .
     cd ../auto_backup && docker build -t cytomine/backup:v1.1.2 .
