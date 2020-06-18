@@ -22,8 +22,8 @@ MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 RUN cd /tmp && wget http://launchpadlibrarian.net/147357170/libopenjpeg2_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg2_1.3+dfsg-4.6ubuntu2_amd64.deb
 RUN cd /tmp && wget http://launchpadlibrarian.net/147357169/libopenjpeg-dev_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg-dev_1.3+dfsg-4.6ubuntu2_amd64.deb
 
-#openslide 2015/04/21
-RUN cd /tmp && git clone https://github.com/openslide/openslide && cd /tmp/openslide && git checkout tags/v3.4.1 && autoreconf -i && ./configure && make && make install
+#openslide on cytomine repo
+RUN cd /tmp && git clone https://github.com/cytomine/openslide && cd /tmp/openslide && git checkout 3a284f9ab4fb39f5081f61f1b0169cdda8dde962 && autoreconf -i && ./configure && make && make install
 
 #IIP Image Server
 RUN cd /tmp && git clone https://github.com/cytomine/iipsrv && cd /tmp/iipsrv && git checkout c794ce2e89611504217eb386ae1bff312eb264dc && sh autogen.sh && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide" ./configure && make

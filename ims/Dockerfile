@@ -38,7 +38,7 @@ RUN apt-get update -y && apt-get install -y \
     apt-get -y build-dep openslide iipimage-server libvips-dev
 
 #openslide
-RUN cd /tmp && git clone https://github.com/openslide/openslide && cd /tmp/openslide && git checkout 4cd4b83c3ffff0382126d0618c85407f2c469b28 && autoreconf -i && ./configure && make && make install
+RUN cd /tmp && git clone https://github.com/cytomine/openslide && cd /tmp/openslide && git checkout 3a284f9ab4fb39f5081f61f1b0169cdda8dde962 && autoreconf -i && ./configure && make && make install
 
 # use previous lib of lipopenjpeg-dev due to the bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=734238
 RUN cd /tmp && wget http://launchpadlibrarian.net/147357170/libopenjpeg2_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg2_1.3+dfsg-4.6ubuntu2_amd64.deb
@@ -58,8 +58,8 @@ EXPOSE 8082
 RUN ldconfig -v
 
 RUN chmod -R 777 /var/lib/tomcat7
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.3/IMS.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.3/restapidoc.json -O restapidoc.json
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.4/IMS.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.4/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails
 
