@@ -46,6 +46,7 @@ EXPOSE 443
 
 RUN mkdir -p /usr/local/nginx/html/.well-known/acme-challenge && cp /usr/local/nginx/html/index.html /usr/local/nginx/html/.well-known/acme-challenge/.
 
+ADD 404.html /opt/nginx/nginx-1.10.1/html/404.html
 ADD nginx.service /etc/init.d/nginx
 ADD deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
