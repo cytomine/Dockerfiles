@@ -58,8 +58,8 @@ EXPOSE 8082
 RUN ldconfig -v
 
 RUN chmod -R 777 /var/lib/tomcat7
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.4/IMS.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.4/restapidoc.json -O restapidoc.json
+RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.5/IMS.war -O ROOT.war
+RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.5/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails
 
