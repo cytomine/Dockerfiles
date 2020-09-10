@@ -1,6 +1,6 @@
 # Cytomine Dockerfiles
 You will find here all the Dockerfiles used to compile Cytomine docker images.
-These images are used in the Cytomine-bootstrap procedure.
+These images are used in the Cytomine-bootstrap procedure or in the clients.
 
 ## How to compile it
 You will find below a script to compile all the images.
@@ -28,5 +28,6 @@ You will find below a script to compile all the images.
     cd ../mongodb && docker build -t cytomine/mongodb:v1.1.2 .
     cd ../auto_backup && docker build -t cytomine/backup:v1.1.2 .
     cd ../slurm && docker build -t cytomine/slurm:v1.0.0 .
+    cd ../software-python3-base && docker build -t cytomine/software-python3-base:v2.2.1 .
     cd ..
     echo DONE
