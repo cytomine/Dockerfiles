@@ -11,7 +11,7 @@ You will find below a script to compile all the images.
     cd ../java8 && docker build -t cytomine/java8:v1.2.0 .
     cd ../software_router && docker build -t cytomine/software_router:v2.0.0 .
     cd ../tomcat7 && docker build -t cytomine/tomcat7:v1.2.1 .
-    cd ../core && docker build -t cytomine/core:v3.0.1 .
+    cd ../core && docker build -t cytomine/core:v3.0.2 .
     cd ../web-ui && docker build -t cytomine/web_ui:v1.2.1 .
     cd ../iris && docker build -t cytomine/iris:v1.1.2 .
     cd ../tomcat7 && docker build -t cytomine/tomcat7:v1.2.0 .
