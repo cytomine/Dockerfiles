@@ -17,7 +17,7 @@
 
 import subprocess
 
-output = subprocess.check_output(["service", "iip", "status"])
+output = subprocess.check_output(["/usr/sbin/service", "iip", "status"])
 
 nb_iip = output.count("/usr/local/httpd/fcgi-bin/iipsrv.fcgi")
 
@@ -26,6 +26,6 @@ print nb_iip
 
 if nb_iip < NB_IIP_PROCESS:
 	print "Restart IIP Service"
-	subprocess.call(["service", "iip", "stop"])
-	subprocess.call(["service", "iip", "start"])
+	subprocess.call(["/usr/sbin/service", "iip", "stop"])
+	subprocess.call(["/usr/sbin/service", "iip", "start"])
 

@@ -1,8 +1,9 @@
-# Dockerfile iipCyto
+# Dockerfile iipJpeg2000
 
 ## Info
 
-This Dockerfile creates a container used to run iipJpeg2000: iipsrv which support Jpeg2000 format
+This Dockerfile creates a container used to run iipJpeg2000: Official version of iipsrv with support of Jpeg2000 format through OpenJPEG library.
+See : http://iipimage.sourceforge.net/
 
 ## Install
 
@@ -14,4 +15,4 @@ see start_deploy.sh
 
 ## Meta
 
-Build with docker 1.3.0
+Build with Docker

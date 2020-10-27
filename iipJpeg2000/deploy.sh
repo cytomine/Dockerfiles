@@ -18,12 +18,24 @@
 echo "/tmp/iip-openslide.out {"          > /etc/logrotate.d/iip
 echo "  copytruncate"                   >> /etc/logrotate.d/iip
 echo "  daily"                          >> /etc/logrotate.d/iip
+echo "  size 250M"                      >> /etc/logrotate.d/iip
 echo "  rotate 14"                      >> /etc/logrotate.d/iip
 echo "  compress"                       >> /etc/logrotate.d/iip
 echo "  missingok"                      >> /etc/logrotate.d/iip
 echo "  create 640 root root"           >> /etc/logrotate.d/iip
 echo "  su root root"                   >> /etc/logrotate.d/iip
 echo "}"                                >> /etc/logrotate.d/iip
+
+echo "/usr/local/nginx/logs/access.log {" >> /etc/logrotate.d/iip
+echo "  copytruncate"                     >> /etc/logrotate.d/iip
+echo "  daily"                            >> /etc/logrotate.d/iip
+echo "  size 100M"                        >> /etc/logrotate.d/iip
+echo "  rotate 30"                        >> /etc/logrotate.d/iip
+echo "  compress"                         >> /etc/logrotate.d/iip
+echo "  missingok"                        >> /etc/logrotate.d/iip
+echo "  create 640 root root"             >> /etc/logrotate.d/iip
+echo "  su root root"                     >> /etc/logrotate.d/iip
+echo "}"                                  >> /etc/logrotate.d/iip
 
 mkdir /tmp/uploaded
 chmod -R 777 /tmp/uploaded
@@ -48,11 +60,14 @@ while [  $COUNTER -lt $NB_IIP_PROCESS ]; do
 done
 sed -i "s/IIP_PROCESS//g" /tmp/nginx.conf.sample
 
-mv /tmp/nginx.conf.sample /usr/local/nginx/conf/nginx.conf
+mv /tmp/nginx.conf.sample /etc/nginx/nginx.conf
 
+
+#end fill
 chmod +x /opt/cytomine/bin/start-iip.sh
 chmod +x /opt/cytomine/bin/stop-iip.sh
 
+sysctl -w net.core.somaxconn=2048
 sh /opt/cytomine/bin/start-iip.sh
 
 crontab /tmp/crontab
@@ -62,16 +77,7 @@ echo "run cron"
 cron
 
 echo "start nginx"
-/usr/local/nginx/sbin/nginx
+/usr/sbin/nginx
 
-echo "tail"
 tail -F /tmp/iip-openslide.out
-
-
-#export VERBOSITY=10
-#export MAX_CVT=10000
-#export MEMCACHED_SERVERS=memcached:11211
-#export MEMCACHED_TIMEOUT=604800
-#export LOGFILE=/tmp/iip-openslide.out
-
 

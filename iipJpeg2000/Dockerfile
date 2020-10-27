@@ -14,60 +14,17 @@
 # limitations under the License.
 #
 
-FROM ubuntu:12.04
+FROM cytomine/iipbase:v1.2.0
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN apt-get -y update && apt-get install -y \
-      build-essential \
-      cron \
-      git \
-      libfcgi0ldbl \
-      libjpeg8-dev \
-      libmemcached-dev \
-      libopenjpeg-dev \
-      libopenslide-dev \
-      libstdc++6 \
-      libtiff4 \
-      memcached \
-      psmisc \
-      software-properties-common \
-      unzip \
-      vim \
-      wget \
-      zlib1g && \
-    apt-get -y build-dep nginx openslide
-
-
-RUN cd /tmp && wget http://nginx.org/download/nginx-1.4.4.tar.gz && tar -zxvf ./nginx-1.4.4.tar.gz
-
-RUN cd /tmp/nginx-1.4.4 && ./configure && make && make install
-
-# Installation of the last version of IIPImage Server, with KAKADU, for JPG2000 images.
-RUN cd /tmp && wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/oldmapsonline/iipimage-server_0.9.9-j2k-0ubuntu12.04_amd64.deb && dpkg -i iipimage-server_0.9.9-j2k-0ubuntu12.04_amd64.deb
-
-RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /usr/lib/cgi-bin/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
-
-ADD nginx.conf.sample /tmp/nginx.conf.sample
-
-RUN mkdir -p /opt/cytomine/bin
-
-ADD start-iip.sh /opt/cytomine/bin/start-iip.sh
-ADD stop-iip.sh /opt/cytomine/bin/stop-iip.sh
-ADD check-iip-status.py /opt/cytomine/bin/check-iip-status.py
-ADD crontab /tmp/crontab
-ADD iipservice /etc/init.d/iip
-RUN chmod 755 /etc/init.d/iip
-RUN chmod +x /opt/cytomine/bin/stop-iip.sh
-RUN chmod +x /opt/cytomine/bin/start-iip.sh
-
+#IIP Image Server
+RUN apt-get -y update && apt-get -y install cmake
+RUN cd /tmp && git clone https://github.com/uclouvain/openjpeg && cd openjpeg/ && mkdir build && cd build/ && cmake .. -DCMAKE_BUILD_TYPE=Release && make && make install && make clean
+RUN cd /tmp && git clone https://github.com/ruven/iipsrv && cd /tmp/iipsrv && git checkout 0295612efc0592c13e8765cd14f7d343d32b1dc0 && sh autogen.sh && ./configure && make 
+RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
 RUN ldconfig -v
 
-ADD deploy.sh /tmp/deploy.sh
-RUN chmod +x /tmp/deploy.sh
-
 ENTRYPOINT ["/tmp/deploy.sh"]
-
-
 
