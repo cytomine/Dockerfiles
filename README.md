@@ -11,7 +11,7 @@ You will find below a script to compile all the images.
     cd ../java8 && docker build -t cytomine/java8:v1.2.0 .
     cd ../software_router && docker build -t cytomine/software_router:v2.0.0 .
     cd ../tomcat7 && docker build -t cytomine/tomcat7:v1.2.1 .
-    cd ../core && docker build -t cytomine/core:v3.0.2 .
+    cd ../core && docker build -t cytomine/core:v3.0.3 .
     cd ../web-ui && docker build -t cytomine/web_ui:v1.2.1 .
     cd ../iris && docker build -t cytomine/iris:v1.1.2 .
     cd ../tomcat7 && docker build -t cytomine/tomcat7:v1.2.0 .
@@ -23,7 +23,7 @@ You will find below a script to compile all the images.
     cd ../iipJpeg2000 && docker build -t cytomine/iipjpeg2000:v1.1.1 .
     cd ../iipOfficial && docker build -t cytomine/iipofficial:v1.2.0 .
     cd ../bioformat && docker build -t cytomine/bioformat:v1.1.2 .
-    cd ../ims && docker build -t cytomine/ims:v1.2.5 .
+    cd ../ims && docker build -t cytomine/ims:v1.2.6 .
     cd ../nginx && docker build -t cytomine/nginx:v1.3.1 .
     cd ../mongodb && docker build -t cytomine/mongodb:v1.1.2 .
     cd ../auto_backup && docker build -t cytomine/backup:v1.1.2 .
