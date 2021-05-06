@@ -14,31 +14,36 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.2.0
+FROM cytomine/base:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 RUN apt-get -y update && apt-get install -y \
+        certbot \
         git \
         libpcre3 \
         libpcre3-dev \
         libssl-dev \
         software-properties-common \
         zlib1g-dev
-RUN add-apt-repository -y ppa:certbot/certbot && \
-        apt-get -y update && \
-        apt-get install -y certbot
+#RUN add-apt-repository -y ppa:certbot/certbot && \
+#        apt-get -y update && \
+#        apt-get install -y certbot
 
-RUN mkdir -p /opt/nginx
-WORKDIR /opt/nginx
-RUN wget http://nginx.org/download/nginx-1.10.1.tar.gz
-RUN tar -zxvf nginx-1.10.1.tar.gz
+RUN cd /tmp && \
+    git clone https://github.com/vkholodkov/nginx-upload-module.git  && \
+    cd nginx-upload-module/ && git checkout 2f67cde5a0aaf7cffd43a71f5c4b443698909f4a
 
-RUN git clone https://github.com/vkholodkov/nginx-upload-module.git
-RUN cd nginx-upload-module/ && git checkout 2f67cde5a0aaf7cffd43a71f5c4b443698909f4a
-
-WORKDIR /opt/nginx/nginx-1.10.1
-RUN ./configure --add-module=/opt/nginx/nginx-upload-module --with-http_ssl_module && make && make install
+ARG NGINX_VERSION=1.17.0
+RUN cd /tmp && \
+    wget https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
+    tar -zxvf nginx-$NGINX_VERSION.tar.gz && \
+    rm nginx-$NGINX_VERSION.tar.gz && \
+    cd /tmp/nginx-$NGINX_VERSION && \
+    ./configure --add-module=/tmp/nginx-upload-module --with-http_ssl_module --with-http_v2_module && \
+    make && \
+    make install && \
+    rm -rf /tmp/*
 
 # Expose ports.
 EXPOSE 80

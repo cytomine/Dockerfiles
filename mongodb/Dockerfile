@@ -14,16 +14,11 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.2.0
+FROM cytomine/base:v1.3.0
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 # Install MongoDB.
-RUN \
-  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
-  echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' > /etc/apt/sources.list.d/mongodb.list && \
-  apt-get update -y && \
-  apt-get install -y mongodb-org && \
-  rm -rf /var/lib/apt/lists/*
+RUN apt-get update -y && apt-get install mongodb -y
 
 # Define mountable directories.
 VOLUME ["/data/db"]

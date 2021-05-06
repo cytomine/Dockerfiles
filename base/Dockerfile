@@ -16,7 +16,7 @@
 
 # Ubuntu reference base OS
 
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 

@@ -14,23 +14,23 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.2.0
+FROM cytomine/java8:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
 RUN apt-get update -y && \
     apt-get install -y \
-	tomcat7
+	tomcat9
 
-ADD tomcat7.settings /tmp/tomcat7.settings
+ADD tomcat9.settings /tmp/tomcat9.settings
 
-RUN cat /tmp/tomcat7.settings > /etc/default/tomcat7
+RUN cat /tmp/tomcat9.settings > /etc/default/tomcat9
 
-RUN cd /tmp/ && wget https://github.com/logrotate/logrotate/releases/download/3.11.0/logrotate-3.11.0.tar.xz && tar -xJf logrotate-3.11.0.tar.xz
 RUN apt-get -y update && apt-get install -y autoconf automake libpopt-dev libtool make xz-utils
-RUN cd /tmp/logrotate-3.11.0 && autoreconf -fiv && ./configure && make
+RUN cd /tmp/ && wget https://github.com/logrotate/logrotate/releases/download/3.18.0/logrotate-3.18.0.tar.xz && tar -xJf logrotate-3.18.0.tar.xz
+RUN cd /tmp/logrotate-3.18.0 && autoreconf -fiv && ./configure && make
 
-RUN cp /tmp/logrotate-3.11.0/logrotate /usr/sbin/logrotate
+RUN cp /tmp/logrotate-3.18.0/logrotate /usr/sbin/logrotate
 
 EXPOSE 8080
 

@@ -14,11 +14,9 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.2.0
+FROM cytomine/java8:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
-
-ARG SINGULARITY_VERSION=3.1.0
 
 RUN apt-get -y update && \
     apt-get install -y \
@@ -26,6 +24,7 @@ RUN apt-get -y update && \
 	git \
 	libssl-dev uuid-dev \
 	libgpgme11-dev \
+	locales \
 	squashfs-tools \
 	libseccomp-dev \
 	pkg-config
@@ -43,11 +42,12 @@ ENV PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 RUN go get -u github.com/golang/dep/cmd/dep
 
 # Singularity installation
+ARG SINGULARITY_VERSION=3.1.0
 RUN mkdir -p $GOPATH/src/github.com/sylabs && \
     cd $GOPATH/src/github.com/sylabs && \
-    wget https://github.com/sylabs/singularity/releases/download/v$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
-    tar xvf singularity-$SINGULARITY_VERSION.tar.gz && \
+    git clone https://github.com/sylabs/singularity.git && \
     cd singularity && \
+    git checkout v$SINGULARITY_VERSION && \
     ./mconfig
 
 RUN cd $GOPATH/src/github.com/sylabs/singularity/builddir && \

@@ -14,16 +14,18 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.2.0
+FROM cytomine/base:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
+
+RUN sed -i "s/\# deb-src http:\/\/archive.ubuntu.com\/ubuntu\/ focal universe/deb-src http:\/\/archive.ubuntu.com\/ubuntu\/ focal universe/g" /etc/apt/sources.list
 
 RUN apt-get -y update && \
     apt-get install -y \
       git \
       libjpeg8-dev \
       libmemcached-dev \
-      libopenjpeg-dev \
+      libopenjp2-7-dev \
       libssl-dev \
       libtiff5-dev \
       psmisc \
@@ -31,16 +33,16 @@ RUN apt-get -y update && \
       apt-get -y build-dep iipimage-server openslide
 
 
-RUN mkdir -p /opt/nginx
-WORKDIR /opt/nginx
-RUN wget http://nginx.org/download/nginx-1.10.1.tar.gz
-RUN tar -zxvf nginx-1.10.1.tar.gz
-
-RUN git clone https://github.com/vkholodkov/nginx-upload-module.git
-RUN cd nginx-upload-module/ && git checkout 2f67cde5a0aaf7cffd43a71f5c4b443698909f4a
-
-WORKDIR /opt/nginx/nginx-1.10.1
-RUN ./configure --add-module=/opt/nginx/nginx-upload-module && make && make install
+ARG NGINX_VERSION=1.15.1
+RUN cd /tmp && \
+    wget https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
+    tar -zxvf nginx-$NGINX_VERSION.tar.gz && \
+    rm nginx-$NGINX_VERSION.tar.gz && \
+    cd /tmp/nginx-$NGINX_VERSION && \
+    ./configure && \
+    make && \
+    make install && \
+    rm -rf /tmp/*
 
 
 RUN mkdir -p /opt/cytomine/bin

@@ -14,10 +14,11 @@
 # limitations under the License.
 #
 
-FROM cytomine/tomcat7:v1.2.1
+FROM cytomine/tomcat:v1.3.0
 
 MAINTAINER Cytomine Team "support@cytomine.be"
 
+RUN sed -i "s/\# deb-src http:\/\/archive.ubuntu.com\/ubuntu\/ focal universe/deb-src http:\/\/archive.ubuntu.com\/ubuntu\/ focal universe/g" /etc/apt/sources.list
 RUN apt-get update -y && apt-get install -y \
       ant \
       dnsutils \
@@ -30,7 +31,7 @@ RUN apt-get update -y && apt-get install -y \
       libgsf-1-dev \
       libjpeg8-dev \
       libmemcached-dev \
-      libopenjpeg-dev \
+      libopenjp2-7-dev \
       libtiff5-dev \
       libtiff-tools \
       libxml2-dev \
@@ -40,16 +41,11 @@ RUN apt-get update -y && apt-get install -y \
 #openslide
 RUN cd /tmp && git clone https://github.com/cytomine/openslide && cd /tmp/openslide && git checkout 3a284f9ab4fb39f5081f61f1b0169cdda8dde962 && autoreconf -i && ./configure && make && make install
 
-# use previous lib of lipopenjpeg-dev due to the bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=734238
-RUN cd /tmp && wget http://launchpadlibrarian.net/147357170/libopenjpeg2_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg2_1.3+dfsg-4.6ubuntu2_amd64.deb
-RUN cd /tmp && wget http://launchpadlibrarian.net/147357169/libopenjpeg-dev_1.3%2Bdfsg-4.6ubuntu2_amd64.deb && dpkg -i libopenjpeg-dev_1.3+dfsg-4.6ubuntu2_amd64.deb
-
 # vips
-RUN cd /tmp && wget https://github.com/libvips/libvips/releases/download/v8.5.1/vips-8.5.1.tar.gz && tar -zxvf ./vips-8.5.1.tar.gz && cd ./vips-8.5.1 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
+RUN cd /tmp && wget https://github.com/libvips/libvips/releases/download/v8.10.0/vips-8.10.0.tar.gz && tar -zxvf ./vips-8.10.0.tar.gz && cd ./vips-8.10.0 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
 
 #openslide-java
-RUN update-java-alternatives -s java-8-oracle
-RUN export JAVA_HOME=/usr/lib/jvm/java-8-oracle && export CFLAGS="-I/usr/lib/jvm/java-8-oracle" && cd /tmp && git clone https://github.com/cytomine/openslide-java && cd /tmp/openslide-java && git checkout 93af97eeca8f0b63e9f71a6916af474ecc474dc8 && autoreconf -i && ./configure && make && make install
+RUN export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && export CFLAGS="-I/usr/lib/jvm/java-8-openjdk-amd64" && cd /tmp && git clone https://github.com/cytomine/openslide-java && cd /tmp/openslide-java && git checkout 93af97eeca8f0b63e9f71a6916af474ecc474dc8 && autoreconf -i && ./configure && make && make install
 
 
 EXPOSE 8081
@@ -57,9 +53,9 @@ EXPOSE 8082
 
 RUN ldconfig -v
 
-RUN chmod -R 777 /var/lib/tomcat7
-RUN rm -r /var/lib/tomcat7/webapps/* && cd /var/lib/tomcat7/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/IMS.war -O ROOT.war
-RUN cd /var/lib/tomcat7/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/restapidoc.json -O restapidoc.json
+RUN chmod -R 777 /var/lib/tomcat9
+RUN rm -r /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/IMS.war -O ROOT.war
+RUN cd /var/lib/tomcat9/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat7/.grails
 

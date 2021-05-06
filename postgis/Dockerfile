@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 
-FROM cytomine/postgres:v2.0.0
+FROM cytomine/postgres:v2.1.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN apt-get update -y && apt-get -y install postgis postgresql-10-postgis-2.4
+RUN apt-get update -y && apt-get -y install postgis postgresql-10-postgis-2.5
 
 USER postgres
 # Add the postgis extension to the `docker` database

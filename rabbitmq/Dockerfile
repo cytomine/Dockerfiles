@@ -14,13 +14,43 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.2.0
+FROM cytomine/base:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN echo "deb http://www.rabbitmq.com/debian/ testing main"  | tee  /etc/apt/sources.list.d/rabbitmq.list > /dev/null
-RUN wget http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-RUN apt-key add rabbitmq-signing-key-public.asc && apt-get update && apt-get install rabbitmq-server -y --force-yes
+RUN apt-get install curl gnupg debian-keyring debian-archive-keyring apt-transport-https -y
+
+## Team RabbitMQ's main signing key
+RUN apt-key adv --keyserver "hkps://keys.openpgp.org" --recv-keys "0x0A9AF2115F4687BD29803A206B73A36E6026DFCA"
+## Cloudsmith: modern Erlang repository
+RUN curl -1sLf https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/gpg.E495BB49CC4BBE5B.key | apt-key add -
+## Cloudsmith: RabbitMQ repository
+RUN curl -1sLf https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/gpg.9F4587F226208342.key | apt-key add -
+
+## Add apt repositories maintained by Team RabbitMQ
+RUN echo '## Provides modern Erlang/OTP releases' > /etc/apt/sources.list.d/rabbitmq.list
+RUN echo '##' >> /etc/apt/sources.list.d/rabbitmq.list      
+RUN echo 'deb https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/deb/ubuntu bionic main' >> /etc/apt/sources.list.d/rabbitmq.list
+RUN echo 'deb-src https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/deb/ubuntu bionic main' >> /etc/apt/sources.list.d/rabbitmq.list
+
+RUN echo '## Provides RabbitMQ' >> /etc/apt/sources.list.d/rabbitmq.list
+RUN echo '##' >> /etc/apt/sources.list.d/rabbitmq.list
+RUN echo 'deb https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/deb/ubuntu bionic main' >> /etc/apt/sources.list.d/rabbitmq.list
+RUN echo 'deb-src https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/deb/ubuntu bionic main' >> /etc/apt/sources.list.d/rabbitmq.list
+
+
+## Update package indices
+RUN apt-get update -y
+
+## Install Erlang packages
+RUN apt-get install -y erlang-base \
+                        erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \
+                        erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
+                        erlang-runtime-tools erlang-snmp erlang-ssl \
+                        erlang-syntax-tools erlang-tftp erlang-tools erlang-xmerl
+
+## Install rabbitmq-server and its dependencies
+RUN apt-get install rabbitmq-server -y 
 
 
 ADD run.sh /run.sh

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/java8:v1.2.0
+FROM cytomine/java8:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 

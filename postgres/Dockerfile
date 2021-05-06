@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/base:v1.2.0
+FROM cytomine/base:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
@@ -24,7 +24,7 @@ RUN wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt
 
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ``10.0``.
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt xenial-pgdg main" >> /etc/apt/sources.list
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" >> /etc/apt/sources.list
 
 # Update the Ubuntu and PostgreSQL repository indexes
 RUN apt-get update -y && apt-get install -y \

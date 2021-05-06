@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/iipbase:v1.2.0
+FROM cytomine/iipbase:v1.3.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 

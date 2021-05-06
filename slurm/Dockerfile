@@ -66,7 +66,7 @@ RUN yum makecache fast \
         wget \
         vim-enhanced \
         zlib-devel \
-    && yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
+    && yum -y install https://repo.ius.io/ius-release-el7.rpm \
     && yum -y install \
         python35u \
         python35u-devel \
