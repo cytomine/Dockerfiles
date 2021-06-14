@@ -16,19 +16,19 @@
 # limitations under the License.
 #
 
-CORE_URL=$(cat /usr/share/tomcat7/.grails/cytomineconfig.groovy | grep grails.serverURL)
+CORE_URL=$(cat /usr/share/tomcat9/.grails/cytomineconfig.groovy | grep grails.serverURL)
 CORE_URL=(${CORE_URL//=/ })
 CORE_URL=${CORE_URL[1]}
 CORE_URL=$(echo $CORE_URL | sed "s/'/\"/g")
 
-cd /var/lib/tomcat7/  && sed -i "/basePath/c\   \"basePath\": $CORE_URL," restapidoc.json
+cd /var/lib/tomcat9/  && sed -i "/basePath/c\   \"basePath\": $CORE_URL," restapidoc.json
 
 bash /tmp/addHosts.sh
 
-mv /tmp/setenv.sh /usr/share/tomcat7/bin/
+mv /tmp/setenv.sh /usr/share/tomcat9/bin/
 
 cron
-service tomcat7 start
+service tomcat9 start
 
 echo "/var/log/tomcat7/catalina.out {"   > /etc/logrotate.d/tomcat7
 echo "  copytruncate"                   >> /etc/logrotate.d/tomcat7
@@ -40,4 +40,4 @@ echo "  missingok"                      >> /etc/logrotate.d/tomcat7
 echo "  create 640 tomcat7 adm"         >> /etc/logrotate.d/tomcat7
 echo "}"                                >> /etc/logrotate.d/tomcat7
 
-tail -F /var/lib/tomcat7/logs/catalina.out
+tail -F /var/lib/tomcat9/logs/catalina.out

@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-FROM cytomine/tomcat:v1.3.0
+FROM tomcat:9.0.46-jdk8-openjdk
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN rm -r /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.0.3/Core.war -O ROOT.war
-RUN cd /var/lib/tomcat9/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.0.3/restapidoc.json -O restapidoc.json
+RUN cd /usr/local/tomcat/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.0.4/Core.war -O ROOT.war
+RUN cd /usr/local/tomcat/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.0.4/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat9/.grails
 
