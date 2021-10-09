@@ -14,12 +14,45 @@
 # limitations under the License.
 #
 
-FROM cytomine/tomcat:v1.3.0
+FROM tomcat:9.0-jdk8-openjdk
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN rm -r /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.2.0/Core.war -O ROOT.war
-RUN cd /var/lib/tomcat9/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.2.0/restapidoc.json -O restapidoc.json
+
+# base librairies and configuration
+RUN apt-get update -y && apt-get -y install \
+      build-essential \
+      locate \
+      logrotate \
+      net-tools \
+      unzip \
+      wget
+
+RUN sed -i "/su root syslog/c\su root root" /etc/logrotate.conf
+ENV LANG C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+
+
+#tomcat configuration
+
+#TODO to adapt ?
+#ADD tomcat9.settings /tmp/tomcat9.settings
+#RUN cat /tmp/tomcat9.settings > /etc/default/tomcat9
+
+RUN apt-get -y update && apt-get install -y autoconf automake libpopt-dev libtool make xz-utils
+RUN cd /tmp/ && wget https://github.com/logrotate/logrotate/releases/download/3.18.0/logrotate-3.18.0.tar.xz && tar -xJf logrotate-3.18.0.tar.xz
+RUN cd /tmp/logrotate-3.18.0 && autoreconf -fiv && ./configure && make
+
+RUN cp /tmp/logrotate-3.18.0/logrotate /usr/sbin/logrotate
+
+
+# core specificities
+
+RUN ln -s /usr/local/tomcat /var/lib/tomcat9 #for backward compatibility
+RUN ln -s /usr/share/tomcat9/.grails /root/.grails #for backward compatibility
+
+RUN rm -rf /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.1.0/Core.war -O ROOT.war
+RUN cd /var/lib/tomcat9/  && wget https://github.com/cytomine/Cytomine-core/releases/download/v3.1.0/restapidoc.json -O restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat9/.grails
 
