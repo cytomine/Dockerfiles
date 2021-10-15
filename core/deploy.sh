@@ -25,7 +25,7 @@ cd /var/lib/tomcat9/  && sed -i "/basePath/c\   \"basePath\": $CORE_URL," restap
 
 bash /tmp/addHosts.sh
 
-mv /tmp/setenv.sh /usr/share/tomcat9/bin/ #TODO to fix ?
+mv /tmp/setenv.sh $CATALINA_HOME/bin/
 
 bash /usr/local/tomcat/bin/catalina.sh run
 #cron

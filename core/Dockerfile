@@ -35,10 +35,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 #tomcat configuration
 
-#TODO to adapt ?
-#ADD tomcat9.settings /tmp/tomcat9.settings
-#RUN cat /tmp/tomcat9.settings > /etc/default/tomcat9
-
 RUN apt-get -y update && apt-get install -y autoconf automake libpopt-dev libtool make xz-utils
 RUN cd /tmp/ && wget https://github.com/logrotate/logrotate/releases/download/3.18.0/logrotate-3.18.0.tar.xz && tar -xJf logrotate-3.18.0.tar.xz
 RUN cd /tmp/logrotate-3.18.0 && autoreconf -fiv && ./configure && make
