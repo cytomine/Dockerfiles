@@ -17,25 +17,27 @@
 
 bash /tmp/addHosts.sh
 
-chown -R tomcat7:tomcat7 $IMS_STORAGE_PATH &
+#chown -R tomcat7:tomcat7 $IMS_STORAGE_PATH &
 
 export LD_LIBRARY_PATH=/usr/local/lib/openslide-java
 
-mv /tmp/setenv.sh /usr/share/tomcat7/bin/
-
-service tomcat7 start
-
-echo "/var/log/tomcat7/catalina.out {"   > /etc/logrotate.d/tomcat7
-echo "  copytruncate"                   >> /etc/logrotate.d/tomcat7
-echo "  daily"                          >> /etc/logrotate.d/tomcat7
-echo "  size 250M"                      >> /etc/logrotate.d/tomcat7
-echo "  rotate 14"                      >> /etc/logrotate.d/tomcat7
-echo "  compress"                       >> /etc/logrotate.d/tomcat7
-echo "  missingok"                      >> /etc/logrotate.d/tomcat7
-echo "  create 640 tomcat7 adm"         >> /etc/logrotate.d/tomcat7
-echo "}"                                >> /etc/logrotate.d/tomcat7
+mv /tmp/setenv.sh $CATALINA_HOME/bin/
 
 mkdir -p /tmp/uploaded
 chmod -R 777 /tmp/uploaded
 
-tail -F /var/lib/tomcat7/logs/catalina.out
+bash /usr/local/tomcat/bin/catalina.sh run
+#service tomcat7 start
+
+#echo "/var/log/tomcat7/catalina.out {"   > /etc/logrotate.d/tomcat7
+#echo "  copytruncate"                   >> /etc/logrotate.d/tomcat7
+#echo "  daily"                          >> /etc/logrotate.d/tomcat7
+#echo "  size 250M"                      >> /etc/logrotate.d/tomcat7
+#echo "  rotate 14"                      >> /etc/logrotate.d/tomcat7
+#echo "  compress"                       >> /etc/logrotate.d/tomcat7
+#echo "  missingok"                      >> /etc/logrotate.d/tomcat7
+#echo "  create 640 tomcat7 adm"         >> /etc/logrotate.d/tomcat7
+#echo "}"                                >> /etc/logrotate.d/tomcat7
+
+
+#tail -F /var/lib/tomcat7/logs/catalina.out
