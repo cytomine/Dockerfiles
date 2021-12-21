@@ -25,19 +25,21 @@ cd /var/lib/tomcat9/  && sed -i "/basePath/c\   \"basePath\": $CORE_URL," restap
 
 bash /tmp/addHosts.sh
 
-mv /tmp/setenv.sh /usr/share/tomcat9/bin/
+mv /tmp/setenv.sh $CATALINA_HOME/bin/
 
-cron
-service tomcat9 start
+bash /usr/local/tomcat/bin/catalina.sh run
+#cron
+#service tomcat9 start
 
-echo "/var/log/tomcat7/catalina.out {"   > /etc/logrotate.d/tomcat7
-echo "  copytruncate"                   >> /etc/logrotate.d/tomcat7
-echo "  daily"                          >> /etc/logrotate.d/tomcat7
-echo "  size 250M"                      >> /etc/logrotate.d/tomcat7
-echo "  rotate 14"                      >> /etc/logrotate.d/tomcat7
-echo "  compress"                       >> /etc/logrotate.d/tomcat7
-echo "  missingok"                      >> /etc/logrotate.d/tomcat7
-echo "  create 640 tomcat7 adm"         >> /etc/logrotate.d/tomcat7
-echo "}"                                >> /etc/logrotate.d/tomcat7
+#echo "/usr/local/tomcat/logs/catalina.out {"   > /etc/logrotate.d/tomcat7
+#echo "  copytruncate"                         >> /etc/logrotate.d/tomcat7
+#echo "  daily"                                >> /etc/logrotate.d/tomcat7
+#echo "  size 250M"                            >> /etc/logrotate.d/tomcat7
+#echo "  rotate 14"                            >> /etc/logrotate.d/tomcat7
+#echo "  compress"                             >> /etc/logrotate.d/tomcat7
+#echo "  missingok"                            >> /etc/logrotate.d/tomcat7
+#echo "  create 640 tomcat9 adm"               >> /etc/logrotate.d/tomcat7
+#echo "}"                                      >> /etc/logrotate.d/tomcat7
 
-tail -F /var/lib/tomcat9/logs/catalina.out
+#tail -F /var/lib/tomcat9/logs/catalina.out
+

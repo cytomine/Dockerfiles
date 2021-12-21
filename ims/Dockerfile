@@ -14,38 +14,67 @@
 # limitations under the License.
 #
 
-FROM cytomine/tomcat:v1.3.0
+FROM tomcat:9.0-jdk8-openjdk
 
-MAINTAINER Cytomine Team "support@cytomine.be"
+MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
-RUN sed -i "s/\# deb-src http:\/\/archive.ubuntu.com\/ubuntu\/ focal universe/deb-src http:\/\/archive.ubuntu.com\/ubuntu\/ focal universe/g" /etc/apt/sources.list
+
+# base librairies and configuration
+RUN apt-get update -y && apt-get -y install \
+      build-essential \
+      curl \
+      locate \
+      logrotate \
+      net-tools \
+      unzip \
+      wget
+
+RUN sed -i "/su root syslog/c\su root root" /etc/logrotate.conf
+ENV LANG C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+
+
+#tomcat configuration
+
+RUN apt-get -y update && apt-get install -y autoconf automake libpopt-dev libtool make xz-utils
+RUN cd /tmp/ && wget https://github.com/logrotate/logrotate/releases/download/3.18.0/logrotate-3.18.0.tar.xz && tar -xJf logrotate-3.18.0.tar.xz
+RUN cd /tmp/logrotate-3.18.0 && autoreconf -fiv && ./configure && make
+
+RUN cp /tmp/logrotate-3.18.0/logrotate /usr/sbin/logrotate
+
+
+# ims specificities
+
 RUN apt-get update -y && apt-get install -y \
       ant \
       dnsutils \
       git \
       gobject-introspection \
       gtk-doc-tools \
+      iipimage-server \
       imagemagick \
       libgirepository1.0-dev \
       libglib2.0-dev \
       libgsf-1-dev \
-      libjpeg8-dev \
+      libjpeg62-turbo-dev \
       libmemcached-dev \
       libopenjp2-7-dev \
+      libsqlite3-dev \
       libtiff5-dev \
       libtiff-tools \
+      libvips-dev \
       libxml2-dev \
-      swig && \
-    apt-get -y build-dep openslide iipimage-server libvips-dev
+      openslide-tools \
+      swig
 
 #openslide
 RUN cd /tmp && git clone https://github.com/cytomine/openslide && cd /tmp/openslide && git checkout 3a284f9ab4fb39f5081f61f1b0169cdda8dde962 && autoreconf -i && ./configure && make && make install
 
 # vips
-RUN cd /tmp && wget https://github.com/libvips/libvips/releases/download/v8.10.0/vips-8.10.0.tar.gz && tar -zxvf ./vips-8.10.0.tar.gz && cd ./vips-8.10.0 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
+RUN cd /tmp && wget https://github.com/libvips/libvips/releases/download/v8.10.6/vips-8.10.6.tar.gz && tar -zxvf ./vips-8.10.6.tar.gz && cd ./vips-8.10.6 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
 
 #openslide-java
-RUN export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && export CFLAGS="-I/usr/lib/jvm/java-8-openjdk-amd64" && cd /tmp && git clone https://github.com/cytomine/openslide-java && cd /tmp/openslide-java && git checkout 93af97eeca8f0b63e9f71a6916af474ecc474dc8 && autoreconf -i && ./configure && make && make install
+RUN export JAVA_HOME=/usr/local/openjdk-8 && export CFLAGS="-I/usr/local/openjdk-8" && cd /tmp && git clone https://github.com/cytomine/openslide-java && cd /tmp/openslide-java && git checkout 93af97eeca8f0b63e9f71a6916af474ecc474dc8 && autoreconf -i && ./configure && make && make install
 
 
 EXPOSE 8081
@@ -53,11 +82,14 @@ EXPOSE 8082
 
 RUN ldconfig -v
 
+RUN ln -s /usr/local/tomcat /var/lib/tomcat9 #for backward compatibility
+RUN ln -s /usr/share/tomcat9/.grails /root/.grails #for backward compatibility
+
 RUN chmod -R 777 /var/lib/tomcat9
-RUN rm -r /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/IMS.war -O ROOT.war
+RUN rm -rf /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/IMS.war -O ROOT.war
 RUN cd /var/lib/tomcat9/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/restapidoc.json -O restapidoc.json
 
-RUN mkdir -p /usr/share/tomcat7/.grails
+RUN mkdir -p /usr/share/tomcat9/.grails
 
 RUN touch /tmp/addHosts.sh
 ADD deploy.sh /tmp/deploy.sh

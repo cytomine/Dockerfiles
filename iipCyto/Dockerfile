@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM cytomine/iipbase:v1.3.0
+FROM cytomine/iipbase:v1.2.0
 
 MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 
@@ -22,7 +22,7 @@ MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
 RUN cd /tmp && git clone https://github.com/cytomine/openslide && cd /tmp/openslide && git checkout 3a284f9ab4fb39f5081f61f1b0169cdda8dde962 && autoreconf -i && ./configure && make && make install
 
 #IIP Image Server
-RUN cd /tmp && git clone https://github.com/cytomine/iipsrv && cd /tmp/iipsrv && git checkout 897e51a01a5d09674f57abfb00d1fec471f4f877 && sh autogen.sh && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide" ./configure && make
+RUN cd /tmp && git clone https://github.com/cytomine/iipsrv && cd /tmp/iipsrv && git checkout f7ae827c49cac8420bed9ffb25edc01d88b3b8ff && sh autogen.sh && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide" ./configure && make
 RUN mkdir -p /usr/local/httpd/fcgi-bin && cp /tmp/iipsrv/src/iipsrv.fcgi /usr/local/httpd/fcgi-bin/iipsrv.fcgi
 
 RUN ldconfig -v

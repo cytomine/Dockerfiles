@@ -16,10 +16,10 @@ You will find below a script to compile all the images.
     cd ../postgres && docker build -t cytomine/postgres:v2.1.0 .
     cd ../postgis && docker build -t cytomine/postgis:v2.1.0 .
     cd ../iipbase && docker build -t cytomine/iipbase:v1.3.0 .
-    cd ../iipCyto && docker build -t cytomine/iipcyto:v1.3.0 .
+    cd ../iipCyto && docker build -t cytomine/iipcyto:v1.2.3 .
     cd ../iipOfficial && docker build -t cytomine/iipofficial:v1.3.0 .
     cd ../bioformat && docker build -t cytomine/bioformat:v1.2.0 .
-    cd ../ims && docker build -t cytomine/ims:v1.2.6 .
+    cd ../ims && docker build -t cytomine/ims:v1.2.6-tomcat9 .
     cd ../nginx && docker build -t cytomine/nginx:v1.4.0 .
     cd ../mongodb && docker build -t cytomine/mongodb:v1.1.2 .
     cd ../slurm && docker build -t cytomine/slurm:v1.0.0 .
