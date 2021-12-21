@@ -1,7 +1,4 @@
-#!/bin/python
-
-#
-# Copyright (c) 2009-2020. Authors: see NOTICE file.
+# Copyright (c) 2009-2019. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,20 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-import subprocess
-import sys
-
-output = subprocess.check_output(["ps", "axu"])
-
-nb_process = output.count("java -jar BioFormatStandAlone.jar")
-
-print "output %s " % output
-print nb_process
-
-if nb_process != 1:
-        print "Restart BioFormat App"
-        subprocess.Popen(["java", "-jar", "/tmp/BioFormatStandAlone_jar/BioFormatStandAlone.jar", sys.argv[1]])
-
-
+COUNT=$(ps aux | grep "java -jar /tmp/cytomine-bioformats-wrapper.jar" | grep -v grep | wc -l)
+if [ $COUNT -lt 1 ]; then
+    echo "$COUNT / 1 on $(date)"
+    java -jar /tmp/cytomine-bioformats-wrapper.jar $1 > /tmp/log &
+fi;

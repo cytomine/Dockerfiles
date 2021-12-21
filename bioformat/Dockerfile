@@ -1,5 +1,4 @@
-#
-# Copyright (c) 2009-2020. Authors: see NOTICE file.
+# Copyright (c) 2009-2019. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-FROM cytomine/java8:v1.3.0
+ARG FROM_NAMESPACE
+ARG FROM_VERSION
+FROM ${FROM_NAMESPACE}/java8:$FROM_VERSION
 
-MAINTAINER Cytomine SCRLFS "support@cytomine.coop"
+ENV BIOFORMAT_PORT 4321
 
-RUN cd /tmp/ && wget -q https://github.com/cytomine/Cytomine-tools/releases/download/v1.1/BioFormatStandAlone.tar.gz -O BioFormatStandAlone.tar.gz && tar -zxvf BioFormatStandAlone.tar.gz
+RUN apt-get -y update && \
+    apt-get install -y \
+      cron \
+      rsyslog && \
+    rm -rf /var/lib/apt/lists/*
 
-ADD crontab /tmp/crontab
-ADD check_bioformat.py /tmp/check_bioformat.py
-ADD deploy.sh /tmp/deploy.sh
+ARG VERSION
+ARG NAMESPACE=Cytomine-ULiege
+ARG RELEASE_PATH=https://github.com/${NAMESPACE}/Cytomine-BioFormats/releases/download/v${VERSION}
+ADD ${RELEASE_PATH}/cytomine-bioformats-wrapper.jar /tmp/cytomine-bioformats-wrapper.jar
+RUN chmod +x /tmp/cytomine-bioformats-wrapper.jar
+
+COPY check-status.sh /tmp/check-status.sh
+RUN chmod +x /tmp/check-status.sh
+
+COPY deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
 
 ENTRYPOINT ["/tmp/deploy.sh"]
+

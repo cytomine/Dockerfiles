@@ -16,7 +16,7 @@ You will find below a script to compile all the images.
         cd ../nginx && docker build -t cytomine/nginx:v1.4.0 .
         cd ../mongodb && docker build -t cytomine/mongodb:v1.2.0 .
         cd ../java8 && docker build -t cytomine/java8:v1.3.0 .
-            cd ../bioformat && docker build -t cytomine/bioformat:v1.2.0 .
+            cd ../bioformat && docker build -t cytomine/bioformat:v1.2.0 --build-arg FROM_NAMESPACE=cytomine --build-arg FROM_VERSION=1.3.0 --build-arg NAMESPACE=cytomine --build-arg VERSION=1.2.0 .
             cd ../software_router && docker build -t cytomine/software_router:v2.1.0 .
             cd ../tomcat && docker build -t cytomine/tomcat:v1.3.0 .
                 cd ../core && docker build -t cytomine/core:v3.2.0 .
