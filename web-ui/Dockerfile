@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-FROM node:13.12.0 as build-stage
+FROM node:14.18.2 as build-stage
 WORKDIR /app
-RUN git clone https://github.com/cytomine/Cytomine-Web-UI.git && cd Cytomine-Web-UI && git checkout v1.2.2
+RUN git clone https://github.com/cytomine/Cytomine-Web-UI.git && cd Cytomine-Web-UI && git checkout v1.4.0
 WORKDIR /app/Cytomine-Web-UI
 RUN npm install
 RUN npm run build

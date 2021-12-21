@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2009-2020. Authors: see NOTICE file.
+# Copyright (c) 2009-2022. Authors: see NOTICE file.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,57 +45,103 @@ RUN cp /tmp/logrotate-3.18.0/logrotate /usr/sbin/logrotate
 
 # ims specificities
 
-RUN apt-get update -y && apt-get install -y \
-      ant \
+RUN apt-get -y update && apt-get install --no-install-recommends --no-install-suggests -y ant \
+      automake \
       dnsutils \
+      ffmpeg \
       git \
       gobject-introspection \
       gtk-doc-tools \
-      iipimage-server \
-      imagemagick \
-      libgirepository1.0-dev \
-      libglib2.0-dev \
+      libcairo2-dev \
+      libfftw3-dev \
+      libgdk-pixbuf2.0-dev \
       libgsf-1-dev \
+      libglib2.0-dev \
+      libimage-exiftool-perl \
       libjpeg62-turbo-dev \
-      libmemcached-dev \
+      libopenexr-dev \
       libopenjp2-7-dev \
+      liborc-0.4-0 \
+      liborc-0.4-dev \
       libsqlite3-dev \
       libtiff5-dev \
       libtiff-tools \
-      libvips-dev \
+      libtool \
       libxml2-dev \
-      openslide-tools \
-      swig
+      software-properties-common \
+      swig && \
+    rm -rf /var/lib/apt/lists/*
 
-#openslide
-RUN cd /tmp && git clone https://github.com/cytomine/openslide && cd /tmp/openslide && git checkout 3a284f9ab4fb39f5081f61f1b0169cdda8dde962 && autoreconf -i && ./configure && make && make install
+# openslide
+ARG OPENSLIDE_VERSION=3.4.1
+RUN cd /tmp && \
+    wget https://github.com/openslide/openslide/releases/download/v${OPENSLIDE_VERSION}/openslide-${OPENSLIDE_VERSION}.tar.gz && \
+    tar -zxvf ./openslide-${OPENSLIDE_VERSION}.tar.gz && \
+    cd ./openslide-${OPENSLIDE_VERSION} && \
+    autoreconf -i && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
+
+# openslide-java
+ARG OPENSLIDE_JAVA_VERSION=0.12.2
+RUN export JAVA_HOME="/usr/local/openjdk-8" && \
+    export CFLAGS="-I/usr/local/openjdk-8" && \
+    cd /tmp && \
+    wget https://github.com/openslide/openslide-java/releases/download/v${OPENSLIDE_JAVA_VERSION}/openslide-java-${OPENSLIDE_JAVA_VERSION}.tar.gz && \
+    tar -zxvf ./openslide-java-${OPENSLIDE_JAVA_VERSION}.tar.gz && \
+    cd ./openslide-java-${OPENSLIDE_JAVA_VERSION} && \
+    autoreconf -i && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
+ENV LD_LIBRARY_PATH=/usr/local/lib/openslide-java
+
+# imagemagick 6.8.9-10 (fix problem with DICOM conversion by vips)
+ARG IMAGE_MAGICK_VERSION=6.8.9-10
+RUN cd /tmp && \
+    wget https://www.imagemagick.org/download/releases/ImageMagick-${IMAGE_MAGICK_VERSION}.tar.xz && \
+    tar xf ImageMagick-${IMAGE_MAGICK_VERSION}.tar.xz && \
+    cd ImageMagick-${IMAGE_MAGICK_VERSION} && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig /usr/local/lib
 
 # vips
-RUN cd /tmp && wget https://github.com/libvips/libvips/releases/download/v8.10.6/vips-8.10.6.tar.gz && tar -zxvf ./vips-8.10.6.tar.gz && cd ./vips-8.10.6 && LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide"  ./configure && make && make install
+ARG VIPS_VERSION=8.11.2
+RUN cd /tmp && \
+    wget https://github.com/libvips/libvips/releases/download/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz && \
+    tar -zxvf ./vips-${VIPS_VERSION}.tar.gz && \
+    cd ./vips-${VIPS_VERSION} && \
+    LDFLAGS="-L/usr/local/lib -lopenslide" CPPFLAGS="-I/usr/local/include/openslide" ./configure && \
+    make && \
+    make install && \
+    ldconfig
 
-#openslide-java
-RUN export JAVA_HOME=/usr/local/openjdk-8 && export CFLAGS="-I/usr/local/openjdk-8" && cd /tmp && git clone https://github.com/cytomine/openslide-java && cd /tmp/openslide-java && git checkout 93af97eeca8f0b63e9f71a6916af474ecc474dc8 && autoreconf -i && ./configure && make && make install
-
-
-EXPOSE 8081
-EXPOSE 8082
-
-RUN ldconfig -v
+# gdal
+RUN apt-get update -y && \
+    apt-get install --no-install-recommends --no-install-suggests -y gdal-bin && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/local/tomcat /var/lib/tomcat9 #for backward compatibility
 RUN ln -s /usr/share/tomcat9/.grails /root/.grails #for backward compatibility
 
-RUN chmod -R 777 /var/lib/tomcat9
-RUN rm -rf /var/lib/tomcat9/webapps/* && cd /var/lib/tomcat9/webapps/ && wget https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/IMS.war -O ROOT.war
-RUN cd /var/lib/tomcat9/  && wget -q https://github.com/cytomine/Cytomine-IMS/releases/download/v1.2.6/restapidoc.json -O restapidoc.json
+ARG RELEASE_PATH=https://github.com/cytomine/Cytomine-IMS/releases/download/v2.0.0
+ADD ${RELEASE_PATH}/IMS.war /var/lib/tomcat9/webapps/ROOT.war
+ADD IMS.war /var/lib/tomcat9/webapps/ROOT.war
+ADD ${RELEASE_PATH}/restapidoc.json /var/lib/tomcat9/webapps/restapidoc.json
 
 RUN mkdir -p /usr/share/tomcat9/.grails
 
+RUN ln -s /usr/local/bin/vips /usr/bin/vips && ln -s /usr/local/bin/identify /usr/bin/identify
+
 RUN touch /tmp/addHosts.sh
-ADD deploy.sh /tmp/deploy.sh
+COPY setenv.sh /usr/share/tomcat7/bin/setenv.sh
+RUN chmod +x /usr/share/tomcat7/bin/setenv.sh
+COPY deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
-ADD setenv.sh /tmp/setenv.sh
-RUN chmod +x /tmp/setenv.sh
 
 ENTRYPOINT ["/tmp/deploy.sh"]
-

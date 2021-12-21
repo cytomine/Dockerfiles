@@ -19,7 +19,7 @@ FROM centos:7.4.1708
 ARG SLURM_VERSION=17.11.7
 ARG SLURM_DOWNLOAD_MD5=6452300949ba375c3898ba7ce7959f05
 ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-"$SLURM_VERSION".tar.bz2
-ARG SINGULARITY_VERSION=v3.0.0
+ARG SINGULARITY_VERSION=v3.7.0
 
 RUN yum makecache fast \
     && yum -y install epel-release \
