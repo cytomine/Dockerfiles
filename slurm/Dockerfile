@@ -16,11 +16,6 @@
 
 FROM centos:7.4.1708
 
-ARG SLURM_VERSION=17.11.7
-ARG SLURM_DOWNLOAD_MD5=6452300949ba375c3898ba7ce7959f05
-ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-"$SLURM_VERSION".tar.bz2
-ARG SINGULARITY_VERSION=v3.7.0
-
 RUN yum makecache fast \
     && yum -y install epel-release \
     && yum -y install \
@@ -83,8 +78,11 @@ RUN sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config && echo 'root:root' 
 
 RUN pip2.7 install Cython nose \
     && pip3.4 install Cython nose \
-    && pip3.5 install Cython nose \
     && pip3.6 install Cython nose
+
+ARG SLURM_VERSION=20.11.8
+ARG SLURM_DOWNLOAD_MD5=cbfe4f64fef41e2e2b5cd6622bea9bfd
+ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-"$SLURM_VERSION".tar.bz2
 
 RUN set -x \
     && wget -O slurm.tar.bz2 "$SLURM_DOWNLOAD_URL" \
@@ -99,7 +97,6 @@ RUN set -x \
     && make install \
     && install -D -m644 etc/cgroup.conf.example /etc/slurm/cgroup.conf.example \
     && install -D -m644 etc/slurm.conf.example /etc/slurm/slurm.conf.example \
-    && install -D -m644 etc/slurm.epilog.clean /etc/slurm/slurm.epilog.clean \
     && install -D -m644 etc/slurmdbd.conf.example /etc/slurm/slurmdbd.conf.example \
     && install -D -m644 contribs/slurm_completion_help/slurm_completion.sh /etc/profile.d/slurm_completion.sh \
     && cd \
@@ -120,26 +117,27 @@ RUN set -x \
 RUN yum -y install squashfs-tools
 
 
-ARG VERSION=1.11.4
+ARG VERSION=1.14.15
 ARG OS=linux
 ARG ARCH=amd64
 ARG GOPATH=${HOME}/go
-RUN cd /tmp && wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
+RUN cd /tmp && wget https://go.dev/dl/go$VERSION.linux-amd64.tar.gz && tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
 
 
 ENV PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin
 
 RUN go get -u github.com/golang/dep/cmd/dep
 
+ARG SINGULARITY_VERSION=3.7.3
 # Singularity installation
-RUN mkdir -p $GOPATH/src/github.com/sylabs && \
-    cd $GOPATH/src/github.com/sylabs && \
-    wget https://github.com/singularityware/singularity/releases/download/$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
+RUN mkdir -p $GOPATH/src/github.com/apptainer && \
+    cd $GOPATH/src/github.com/apptainer && \
+    wget https://github.com/apptainer/singularity/releases/download/v$SINGULARITY_VERSION/singularity-$SINGULARITY_VERSION.tar.gz && \
     tar xvf singularity-$SINGULARITY_VERSION.tar.gz && \
     cd singularity && \
     ./mconfig
 
-RUN cd $GOPATH/src/github.com/sylabs/singularity/builddir && \
+RUN cd $GOPATH/src/github.com/apptainer/singularity/builddir && \
     make && \
     make install
 
@@ -152,6 +150,8 @@ RUN chmod -R 777 /data/softwares/images
 
 COPY slurm.conf /etc/slurm/slurm.conf
 COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
+RUN chmod 600 /etc/slurm/slurmdbd.conf && chown slurm /etc/slurm/slurmdbd.conf
+
 COPY supervisord.conf /etc/
 
 VOLUME ["/var/lib/mysql", "/var/lib/slurmd", "/var/spool/slurmd", "/var/log/slurm"]

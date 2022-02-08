@@ -21,7 +21,7 @@ You will find below a script to compile all the images.
             cd ../tomcat && docker build -t cytomine/tomcat:v1.3.0 .
                 cd ../core && docker build -t cytomine/core:v3.2.0 .
                 cd ../ims && docker build -t cytomine/ims:v2.0.0 .
-    cd ../slurm && docker build -t cytomine/slurm:v1.1.0 .
+    cd ../slurm && docker build -t cytomine/slurm:v1.2.0 .
     cd ../web-ui && docker build -t cytomine/web_ui:v1.4.0 .
     cd ../software-python3-base && docker build -t cytomine/software-python3-base:v2.2.2 .
     cd ..
