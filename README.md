@@ -19,7 +19,7 @@ You will find below a script to compile all the images.
             cd ../bioformat && docker build -t cytomine/bioformat:v1.2.0 --build-arg FROM_NAMESPACE=cytomine --build-arg FROM_VERSION=1.3.0 --build-arg NAMESPACE=cytomine --build-arg VERSION=1.2.0 .
             cd ../software_router && docker build -t cytomine/software_router:v2.1.0 .
             cd ../tomcat && docker build -t cytomine/tomcat:v1.3.0 .
-                cd ../core && docker build -t cytomine/core:v3.2.0 .
+                cd ../core && docker build -t cytomine/core:v3.2.1 .
                 cd ../ims && docker build -t cytomine/ims:v2.0.0 .
     cd ../slurm && docker build -t cytomine/slurm:v1.2.0 .
     cd ../web-ui && docker build -t cytomine/web_ui:v1.4.0 .
